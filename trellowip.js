@@ -7,6 +7,7 @@
  * Nathan Harkenrider <https://github.com/NateHark>
  *
  */
+// $$('.js-project-column-name').map((n) => n.innerText).map(n => /\[(\d+)(?:-(\d+))?\]/.exec(n)).filter(n => !!n).map(([,wip]) => wip)
 
 $(function() {
     function updateList($c) {
@@ -25,7 +26,7 @@ $(function() {
     var listObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
             setTimeout(function() { 
-                updateList($(mutation.target).closest('.list')); 
+                updateList($(mutation.target).closest('div[id^="project-column-"]')); 
             });
         });
     });
@@ -34,7 +35,7 @@ $(function() {
     // are properly wired when you switch from the board list to a particular board 
     var contentObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
-            var lists = $(mutation.target).find('#board .list');
+            var lists = $(mutation.target).find('div[id^="project-column-"]');
             observeLists(lists);
             lists.each(function(index, list) {
                 setTimeout(function() { 
@@ -50,8 +51,8 @@ $(function() {
         }
     }; 
 
-    var content = $.find('#content');
-    var lists = $.find('#board .list');
+    var content = $.find('.project-container');
+    var lists = $.find('div[id^="project-column-"]');
 
     if(content.length) {
         contentObserver.observe(content[0], { childList: true });
@@ -106,8 +107,8 @@ function List(el) {
         cardMinLimit,
 				cardMaxLimit;   
 
-    $listHeader = $list.find('.list-header h2');
-
+    $listHeader = $list.find('.js-project-column-name');
+    // console.log($listHeader);
     function calcWipLimit() {
         if(!$listHeader) {
             return;
@@ -117,6 +118,7 @@ function List(el) {
             if(this.nodeType === 3) {
                 var listName = this.nodeValue;
                 var matches = listMatch.exec(listName);
+                // console.log(matches);
 		cardMinLimit = cardMaxLimit = null;
 		if(!matches || matches.length != 3) {	return; }
 		if(typeof matches[2] === 'undefined') {
@@ -137,10 +139,11 @@ function List(el) {
         
         if(cardMaxLimit != null) {
             var cardCount = 0;
-            $list.find('.list-card').not('.hide').each(function() {
+            $list.find('.issue-card').not('.hide').each(function() {
                 if($(this).parent().hasClass('card-composer')) return true;    
                 cardCount++;
             });
+            console.log(cardCount);
             
             if(cardCount > cardMaxLimit || (cardMinLimit != null && cardCount < cardMinLimit)) {
                 $list.addClass('over-limit');
