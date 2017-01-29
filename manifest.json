@@ -6,17 +6,17 @@
                 "https://192.168.1.170/*", 
                 "https://github.com/*" 
             ],
-            "css": [ "trellowip.css" ],
+            "css": [ "github_projects_wip.css" ],
             "js": [ 
                 "jquery-1.7.1.min.js", 
-                "trellowip.js"
+                "github_projects_wip.js"
             ]
         }
     ],
-    "description": "Adds work-in-progress limits to Trello lists supporting a Kanban workflow.",
+    "description": "Adds work-in-progress limits to Github Project Columns, to support a Kanban workflow.",
     "icons": {
-        "128": "trellowipicon.png"
+        "128": "github_projects_wip_icon.png"
     },
-    "name": "Kanban WIP for Trello",
-    "version": "0.3.3"
+    "name": "Github Projects Wip Limits",
+    "version": "0.1.0"
 }
