@@ -1,9 +1,42 @@
-TrelloWIPLimits
-====================
+<p align="center">
+  <a name="brand" href="#">
+    <img src="docs/wip.jpg"/>
+  </a>
+</p>
 
-A simple Google Chrome extension that adds work-in-progress limits to [Trello](http://trello.com) lists supporting a Kanban workflow. To set a WIP limit on a list, include the limit in braces in the list title (e.g., "My List [4]). When the number of cards in the list exceeds the limit, the list background will turn red.
-You may also set a minimum WIP limit by using a range (e.g "Title [2-3]"). 
+<p align="center">
+  <b><a href="#overview">Overview</a></b>
+  |
+  <b><a href="#features">Features</a></b>
+  |
+  <b><a href="#credits">Credits</a></b>
+  |
+  <b><a href="#issues">Issues</a></b>
+</p>
 
-Install via the Chrome Web Store: https://chrome.google.com/webstore/detail/oekefjibcnongmmmmkdiofgeppfkmdii?utm_source=chrome-ntp-icon
+<p align="center">
+    <a href="https://travis-ci.org/jdrew1303/iris"><img src="https://img.shields.io/travis/b4b4r07/dotfiles.svg?style=flat-square" alt=""></a>
+    <a href="./doc/LICENSE-MIT.txt"><img src="http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt=""></a>
+    <a href="./doc/OS_X.md"><img src="https://img.shields.io/badge/platform-chrome-808080.svg?style=flat-square" alt=""></a>
+    <a href="https://github.com/username/repo/wiki"><img src="https://img.shields.io/badge/documentation-wiki-green.svg?style=flat-square" alt=""></a>
+</p>
 
-Inspired by TrelloScrum <https://github.com/Q42/TrelloScrum>. [Trello](http://trello.com) is a Trademark of Fog Creek Software, Inc. 
+## Overview
+
+
+<p align="center">
+  <img src="docs/github_project_kanban_demo.gif"/>
+</p>
+
+<p align="right"><a href="#top">:arrow_up:</a></p>
+
+## Features
+
+<p align="right"><a href="#top">:arrow_up:</a></p>
+
+## Credits
+
+[![jdrew1303](https://avatars0.githubusercontent.com/u/2535432?v=3&s=40)](https://twitter.com/intent/follow?screen_name=j_drew1303 "Follow @j_drew1303 on Twitter")
+
+Copyright (c) 2016
+<p align="right"><a href="#top">:arrow_up:</a></p>
