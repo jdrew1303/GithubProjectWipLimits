@@ -10,6 +10,7 @@
 // $$('.js-project-column-name').map((n) => n.innerText).map(n => /\[(\d+)(?:-(\d+))?\]/.exec(n)).filter(n => !!n).map(([,wip]) => wip)
 
 $(function() {
+    console.log('once more into the breach');
     function updateList($c) {
         $c.each(function() {
             if(!this.list) { 
@@ -54,6 +55,7 @@ $(function() {
     var content = $.find('.project-container');
     var lists = $.find('div[id^="project-column-"]');
 
+    console.log(lists);
     if(content.length) {
         contentObserver.observe(content[0], { childList: true });
     }
@@ -63,37 +65,19 @@ $(function() {
     }
 
     // Recalculate limits when the list title is changed
-    $('.list-title .js-save-edit').live('mouseup', function(e) {
-        setTimeout(function() { updateList($(e.target).parents('.list')); });       
+    $('.js-project-column-name').live('mouseup', function(e) {
+        setTimeout(function() { 
+            updateList($(e.target).parents('div[id^="project-column-"]')); 
+        });       
     });
 
-    // Recalculate limits when filters are applied
-    $('.js-toggle-label-filter').live('mouseup', function(e) {
+    $('.new-project-column').live('mouseup', function(e) {
         setTimeout(function() {
-            updateList($('.list'));
+            updateList($('div[id^="project-column-"]'));
         });
     });
 
-    $('.js-due-filter').live('mouseup', function(e) {
-        setTimeout(function() {
-            updateList($('.list'));
-        });
-    });
-
-    // Recalculate limits when filters are cleared
-    $('.js-clear-all').live('mouseup', function(e) {
-        setTimeout(function() {
-            updateList($('.list'));
-        });
-    });
-
-    $('.js-filter-card-clear').live('mouseup', function(e) {
-        setTimeout(function() {
-            updateList($('.list'));
-        });
-    }); 
-
-    updateList($('.list'));
+    updateList($('div[id^="project-column-"]'));
 });
 
 //.list pseudo
@@ -101,11 +85,11 @@ function List(el) {
     if(el.list) return;
 	el.list=this;
 
-	var $list=$(el),
+	var $list = $(el),
         $listHeader,
         listMatch = /\[(\d+)(?:-(\d+))?\]/,
         cardMinLimit,
-				cardMaxLimit;   
+		cardMaxLimit;   
 
     $listHeader = $list.find('.js-project-column-name');
     // console.log($listHeader);
@@ -115,6 +99,7 @@ function List(el) {
         }
 
         $listHeader.contents().each(function() {
+            console.log(this);
             if(this.nodeType === 3) {
                 var listName = this.nodeValue;
                 var matches = listMatch.exec(listName);
@@ -134,21 +119,19 @@ function List(el) {
     this.checkWipLimit = function() {
         $list.removeClass('over-limit');
         $list.removeClass('at-limit');
+        $list.removeClass('under-limit');
 
         calcWipLimit();
         
         if(cardMaxLimit != null) {
-            var cardCount = 0;
-            $list.find('.issue-card').not('.hide').each(function() {
-                if($(this).parent().hasClass('card-composer')) return true;    
-                cardCount++;
-            });
+            var cardCount = $list.find('.issue-card').not('.hide').length || 0;
             console.log(cardCount);
-            
             if(cardCount > cardMaxLimit || (cardMinLimit != null && cardCount < cardMinLimit)) {
                 $list.addClass('over-limit');
             } else if (cardCount == cardMaxLimit || (cardMinLimit != null && cardCount == cardMinLimit)) {
                 $list.addClass('at-limit');
+            } else {
+                $list.addClass('under-limit');
             }
         }
     };

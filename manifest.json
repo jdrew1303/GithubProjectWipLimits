@@ -2,9 +2,15 @@
     "manifest_version": 2,
     "content_scripts": [
         {
-            "matches": [ "https://192.168.1.170/*" ],
+            "matches": [ 
+                "https://192.168.1.170/*", 
+                "https://github.com/*" 
+            ],
             "css": [ "trellowip.css" ],
-            "js": [ "jquery-1.7.1.min.js", "trellowip.js" ]
+            "js": [ 
+                "jquery-1.7.1.min.js", 
+                "trellowip.js"
+            ]
         }
     ],
     "description": "Adds work-in-progress limits to Trello lists supporting a Kanban workflow.",
