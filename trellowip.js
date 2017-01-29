@@ -1,16 +1,18 @@
-/*
- * TrelloWIPLimits v0.3.1 <https://github.com/NateHark/TrellowWIPLimits>
- * Adds work-in-progress limits to Trello lists supporting a Kanban workflow.
- * Inspired by TrelloScrum <https://github.com/Q42/TrelloScrum> 
- *
- * Original Author:
- * Nathan Harkenrider <https://github.com/NateHark>
- *
- */
-// $$('.js-project-column-name').map((n) => n.innerText).map(n => /\[(\d+)(?:-(\d+))?\]/.exec(n)).filter(n => !!n).map(([,wip]) => wip)
+// TODO Look into decomposing a lot of the functions in here to make them 
+// easier to add to and to comprehend. One idea is to make the majority of 
+// operations maps. 👍 Like to following: 
+// 
+// $$('.js-project-column-name').map((n) => n.innerText)
+//                              .map(n => /\[(\d+)(?:-(\d+))?\]/.exec(n))
+//                              .filter(n => !!n)
+//                              .map(([,wip]) => wip);
+// 
+// TODO Also need to add observers for new pipeline additions. Currently it 
+// doesnt watch new pipelines, even if they contain a wip limit. It does kick 
+// in if you refresh the page.
 
 $(function() {
-    console.log('once more into the breach');
+    
     function updateList($c) {
         $c.each(function() {
             if(!this.list) { 
@@ -92,21 +94,20 @@ function List(el) {
 		cardMaxLimit;   
 
     $listHeader = $list.find('.js-project-column-name');
-    // console.log($listHeader);
+
     function calcWipLimit() {
-        if(!$listHeader) {
-            return;
-        }
+        if(!$listHeader) { return; }
 
         $listHeader.contents().each(function() {
-            console.log(this);
+
             if(this.nodeType === 3) {
                 var listName = this.nodeValue;
                 var matches = listMatch.exec(listName);
-                // console.log(matches);
-		cardMinLimit = cardMaxLimit = null;
-		if(!matches || matches.length != 3) {	return; }
-		if(typeof matches[2] === 'undefined') {
+                
+                cardMinLimit = cardMaxLimit = null;
+                if(!matches || matches.length != 3) {	return; }
+                
+                if(typeof matches[2] === 'undefined') {
                     cardMaxLimit = matches[1];
                 } else {
                     cardMinLimit = matches[1];
@@ -123,12 +124,23 @@ function List(el) {
 
         calcWipLimit();
         
-        if(cardMaxLimit != null) {
-            var cardCount = $list.find('.issue-card').not('.hide').length || 0;
-            console.log(cardCount);
-            if(cardCount > cardMaxLimit || (cardMinLimit != null && cardCount < cardMinLimit)) {
+        const isNotNull = (x) => (x != null);
+
+        if(isNotNull(cardMaxLimit)) {
+            const cardCount = $list.find('.issue-card').not('.hide').length || 0;
+
+            const hasMinLimit = isNotNull(cardMinLimit);
+            const isOverMaxLimit = (c) => (c > cardMaxLimit);
+            const isUnderMinLimit = (c) => (hasMinLimit && (c < cardMinLimit));
+            const isOnMaxLimit = (c) => (c == cardMaxLimit);
+            const isOnMinLimit = (c) => (hasMinLimit && (c == cardMinLimit));
+
+            const hasExceededLimits = (c) => (isOverMaxLimit(c) || isUnderMinLimit(c));
+            const isOnLimits = (c) => (isOnMaxLimit(c) || isOnMinLimit(c));
+
+            if(hasExceededLimits(cardCount)) {
                 $list.addClass('over-limit');
-            } else if (cardCount == cardMaxLimit || (cardMinLimit != null && cardCount == cardMinLimit)) {
+            } else if (isOnLimits(cardCount)) {
                 $list.addClass('at-limit');
             } else {
                 $list.addClass('under-limit');
