@@ -30,6 +30,9 @@
 
 <p align="right"><a href="#top">:arrow_up:</a></p>
 
+## Installation 
+
+![Chrome Installation](docs/unpack_chrome_extension.gif)
 ## Features
 
 <p align="right"><a href="#top">:arrow_up:</a></p>
